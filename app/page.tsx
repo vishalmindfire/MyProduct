@@ -1,65 +1,379 @@
-import Image from "next/image";
+import type { Metadata } from "next";
+import Link from "next/link";
+import FeatureGrid from "@/app/components/FeatureGrid";
+import PlanGrid from "@/app/components/PlanGrid";
+import { homepageFeatures } from "@/app/data/features";
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: "DAM — Digital Asset Management for Modern Teams",
+  description:
+    "Organize, search, and distribute every file your team creates — images, video, documents, and more — from one fast, secure hub.",
+};
+
+const testimonials = [
+  {
+    quote:
+      "We went from spending half a day hunting down brand-approved files to finding anything in under 10 seconds. Our whole marketing team is faster now.",
+    name: "Sarah Chen",
+    title: "Head of Brand, Luminary Studio",
+    initials: "SC",
+  },
+  {
+    quote:
+      "The version history alone was worth switching. Being able to roll back a product image an hour before launch saved us once — that was enough.",
+    name: "Marcus Williams",
+    title: "Creative Director, Foundry Commerce",
+    initials: "MW",
+  },
+  {
+    quote:
+      "We manage assets for 120 clients. Guest links with expiry dates and watermarks let us share files without losing control. We wouldn't go back.",
+    name: "Priya Anand",
+    title: "Operations Lead, Scope Agency",
+    initials: "PA",
+  },
+];
+
+const useCases = [
+  {
+    industry: "E-commerce",
+    heading: "Keep product images consistent across every channel",
+    body: "Centralise hero images, lifestyle shots, and spec sheets. Push approved assets directly to your storefront and CMS via API — no more email threads or Dropbox folders.",
+    accent: "bg-indigo-50 dark:bg-indigo-950/30 border-indigo-100 dark:border-indigo-900",
+    tag: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400",
+  },
+  {
+    industry: "Agencies",
+    heading: "Deliver client work without losing your mind",
+    body: "Organise each client in its own workspace. Share a password-protected portal for review, collect approvals, and track exactly who downloaded what.",
+    accent: "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-100 dark:border-emerald-900",
+    tag: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400",
+  },
+  {
+    industry: "Enterprise",
+    heading: "Enforce brand standards at every touchpoint",
+    body: "Watermark assets on the fly, lock folders to approved contributors, and pull a full audit log any time legal or compliance needs to see who accessed what.",
+    accent: "bg-amber-50 dark:bg-amber-950/30 border-amber-100 dark:border-amber-900",
+    tag: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400",
+  },
+];
+
+/* ─── page ───────────────────────────────────────────────────────────────── */
+
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="flex flex-col flex-1 bg-white dark:bg-zinc-950 font-sans">
+
+      {/* ── Nav ─────────────────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-50 border-b border-zinc-100 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur">
+        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 h-14">
+          <span className="text-sm font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+            Axon<span className="text-zinc-400 dark:text-zinc-500"> DAM</span>
+          </span>
+          <div className="hidden sm:flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+            <Link href="/features" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Features</Link>
+            <Link href="/pricing" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Pricing</Link>
+          </div>
+          <div className="flex items-center gap-2">
+            <a href="#" className="hidden sm:flex h-8 items-center px-4 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">
+              Log in
+            </a>
+            <a href="#" className="flex h-8 items-center rounded-full bg-zinc-950 dark:bg-zinc-50 px-4 text-sm font-medium text-white dark:text-zinc-950 hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors">
+              Get started
+            </a>
+          </div>
+        </nav>
+      </header>
+
+      {/* ── Hero ────────────────────────────────────────────────────────── */}
+      <section className="mx-auto w-full max-w-5xl px-6 pt-24 pb-20 text-center">
+        <a
+          href="#"
+          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-8 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+        >
+          <span className="size-1.5 rounded-full bg-emerald-500" />
+          New — AI visual search is now live
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} className="size-3">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+        </a>
+
+        <h1 className="text-5xl sm:text-6xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 leading-[1.1]">
+          Every asset your team
+          <br />
+          <span className="text-zinc-400 dark:text-zinc-500">creates, in one place.</span>
+        </h1>
+
+        <p className="mt-6 text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+          Axon is the digital asset manager built for speed. Ingest anything,
+          find it instantly, and deliver it anywhere — without the enterprise
+          bloat.
+        </p>
+
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="#"
+            className="flex h-11 items-center justify-center rounded-full bg-zinc-950 dark:bg-zinc-50 px-6 text-sm font-medium text-white dark:text-zinc-950 transition-colors hover:bg-zinc-700 dark:hover:bg-zinc-200"
+          >
+            Start for free
+          </a>
+          <Link
+            href="/features"
+            className="flex h-11 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 px-6 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900"
+          >
+            See all features
+          </Link>
+        </div>
+
+        <p className="mt-4 text-xs text-zinc-400 dark:text-zinc-500">
+          Free plan available · No credit card required · 14-day Pro trial
+        </p>
+
+        {/* Hero UI mockup */}
+        <div className="mt-16 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 shadow-sm text-left">
+          {/* toolbar */}
+          <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-1.5 flex-1 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="size-4 shrink-0 text-zinc-400">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+              </svg>
+              <span className="text-sm text-zinc-400 dark:text-zinc-500">Search 2M+ assets…</span>
+            </div>
+            <div className="flex items-center gap-1">
+              {["All", "Images", "Video", "Docs"].map((tab, i) => (
+                <span
+                  key={tab}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
+                    i === 0
+                      ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-zinc-50 shadow-sm"
+                      : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
+                  }`}
+                >
+                  {tab}
+                </span>
+              ))}
+            </div>
+          </div>
+          {/* asset grid */}
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+            {Array.from({ length: 16 }).map((_, i) => (
+              <div
+                key={i}
+                className="aspect-square rounded-lg bg-zinc-200 dark:bg-zinc-700"
+                style={{ opacity: 1 - i * 0.03 }}
+              />
+            ))}
+          </div>
+          <div className="mt-3 flex items-center justify-between text-xs text-zinc-400 dark:text-zinc-500">
+            <span>2,341,098 assets</span>
+            <span>Last updated just now</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Social proof strip ──────────────────────────────────────────── */}
+      <section className="border-y border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+        <div className="mx-auto max-w-5xl px-6 py-5 flex flex-wrap items-center justify-center gap-x-10 gap-y-3">
+          <span className="text-xs text-zinc-400 dark:text-zinc-500 whitespace-nowrap">
+            Trusted by teams at
+          </span>
+          {["Luminary", "Foundry Co.", "Scope Agency", "Vertex Labs", "Meridian"].map((name) => (
+            <span
+              key={name}
+              className="text-sm font-semibold text-zinc-400 dark:text-zinc-600"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              {name}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Features ────────────────────────────────────────────────────── */}
+      <section id="features" className="mx-auto w-full max-w-5xl px-6 py-24">
+        <div className="text-center mb-14">
+          <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+            Features
+          </span>
+          <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+            Built for the full asset lifecycle
+          </h2>
+          <p className="mt-3 text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto">
+            From first upload to final delivery — every stage covered, nothing
+            bolted on.
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        <FeatureGrid features={homepageFeatures} cols={3} />
+
+        <div className="mt-8 text-center">
+          <Link
+            href="/features"
+            className="inline-flex h-9 items-center gap-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 px-4 text-sm text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-900 transition-colors"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Explore all features
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} className="size-3.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
+          </Link>
         </div>
-      </main>
+      </section>
+
+      {/* ── Pricing / Plans ─────────────────────────────────────────────── */}
+      <section id="pricing" className="border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+        <div className="mx-auto w-full max-w-5xl px-6 py-24">
+          <div className="text-center mb-14">
+            <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+              Pricing
+            </span>
+            <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+              Simple, transparent pricing
+            </h2>
+            <p className="mt-3 text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
+              Start free. Upgrade when your team is ready. Annual billing saves 20%.
+            </p>
+          </div>
+
+          <PlanGrid ctaHref="/pricing" compact />
+
+          <div className="mt-6 text-center">
+            <Link
+              href="/pricing"
+              className="inline-flex h-9 items-center gap-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 px-4 text-sm text-zinc-600 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-900 transition-colors"
+            >
+              See full plan comparison
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} className="size-3.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 8h10M9 4l4 4-4 4" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Testimonials ────────────────────────────────────────────────── */}
+      <section id="testimonials" className="border-t border-zinc-100 dark:border-zinc-800">
+        <div className="mx-auto w-full max-w-5xl px-6 py-24">
+          <div className="text-center mb-14">
+            <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+              Testimonials
+            </span>
+            <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+              Teams that made the switch
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-4">
+            {testimonials.map((t) => (
+              <figure
+                key={t.name}
+                className="flex flex-col gap-5 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-6"
+              >
+                {/* stars */}
+                <div className="flex gap-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <svg key={i} viewBox="0 0 16 16" fill="currentColor" className="size-4 text-amber-400">
+                      <path d="M8 .25a.75.75 0 0 1 .673.418l1.882 3.815 4.21.612a.75.75 0 0 1 .416 1.279l-3.046 2.97.719 4.192a.75.75 0 0 1-1.088.791L8 12.347l-3.766 1.98a.75.75 0 0 1-1.088-.79l.72-4.194L.818 6.374a.75.75 0 0 1 .416-1.28l4.21-.611L7.327.668A.75.75 0 0 1 8 .25Z" />
+                    </svg>
+                  ))}
+                </div>
+
+                <blockquote className="flex-1 text-sm leading-7 text-zinc-600 dark:text-zinc-400">
+                  &ldquo;{t.quote}&rdquo;
+                </blockquote>
+
+                <figcaption className="flex items-center gap-3">
+                  <div className="size-9 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-xs font-semibold text-zinc-600 dark:text-zinc-300 shrink-0">
+                    {t.initials}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-zinc-950 dark:text-zinc-50">
+                      {t.name}
+                    </p>
+                    <p className="text-xs text-zinc-400 dark:text-zinc-500">
+                      {t.title}
+                    </p>
+                  </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Use cases ───────────────────────────────────────────────────── */}
+      <section className="border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
+        <div className="mx-auto w-full max-w-5xl px-6 py-24">
+          <div className="text-center mb-14">
+            <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
+              Use cases
+            </span>
+            <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+              Built for how you actually work
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-3 gap-4">
+            {useCases.map((uc) => (
+              <div
+                key={uc.industry}
+                className={`rounded-2xl border p-6 ${uc.accent}`}
+              >
+                <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold mb-4 ${uc.tag}`}>
+                  {uc.industry}
+                </span>
+                <h3 className="text-base font-semibold text-zinc-950 dark:text-zinc-50 mb-2 leading-snug">
+                  {uc.heading}
+                </h3>
+                <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
+                  {uc.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ─────────────────────────────────────────────────────────── */}
+      <section className="border-t border-zinc-100 dark:border-zinc-800">
+        <div className="mx-auto max-w-5xl px-6 py-28 text-center">
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
+            Your assets are waiting.
+          </h2>
+          <p className="mt-4 text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
+            Get set up in minutes. Free plan forever, no credit card required.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <a
+              href="#"
+              className="flex h-11 items-center justify-center rounded-full bg-zinc-950 dark:bg-zinc-50 px-6 text-sm font-medium text-white dark:text-zinc-950 transition-colors hover:bg-zinc-700 dark:hover:bg-zinc-200"
+            >
+              Start for free
+            </a>
+            <a
+              href="#"
+              className="flex h-11 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 px-6 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900"
+            >
+              Book a demo
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Footer ──────────────────────────────────────────────────────── */}
+      <footer className="border-t border-zinc-100 dark:border-zinc-800">
+        <div className="mx-auto max-w-5xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400 dark:text-zinc-500">
+          <span className="font-semibold text-zinc-500 dark:text-zinc-400">
+            Axon DAM
+          </span>
+          <div className="flex items-center gap-6">
+            <Link href="/features" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">Features</Link>
+            <Link href="/pricing" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">Pricing</Link>
+            <a href="#" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">Privacy</a>
+            <a href="#" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">Terms</a>
+          </div>
+          <span>© 2026 Axon DAM</span>
+        </div>
+      </footer>
+
     </div>
   );
 }
