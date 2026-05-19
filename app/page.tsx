@@ -3,6 +3,7 @@ import Link from "next/link";
 import FeatureGrid from "@/app/components/FeatureGrid";
 import PlanGrid from "@/app/components/PlanGrid";
 import { homepageFeatures } from "@/app/data/features";
+import Header from "@/app/components/Header";
 
 export const metadata: Metadata = {
   title: "DAM — Digital Asset Management for Modern Teams",
@@ -63,28 +64,7 @@ const useCases = [
 export default function HomePage() {
   return (
     <div className="flex flex-col flex-1 bg-white dark:bg-zinc-950 font-sans">
-
-      {/* ── Nav ─────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-zinc-100 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur">
-        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 h-14">
-          <span className="text-sm font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-            Axon<span className="text-zinc-400 dark:text-zinc-500"> DAM</span>
-          </span>
-          <div className="hidden sm:flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
-            <Link href="/features" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Features</Link>
-            <Link href="/pricing" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Pricing</Link>
-          </div>
-          <div className="flex items-center gap-2">
-            <a href="#" className="hidden sm:flex h-8 items-center px-4 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">
-              Log in
-            </a>
-            <a href="#" className="flex h-8 items-center rounded-full bg-zinc-950 dark:bg-zinc-50 px-4 text-sm font-medium text-white dark:text-zinc-950 hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors">
-              Get started
-            </a>
-          </div>
-        </nav>
-      </header>
-
+      <Header/>
       {/* ── Hero ────────────────────────────────────────────────────────── */}
       <section className="mx-auto w-full max-w-5xl px-6 pt-24 pb-20 text-center">
         <a

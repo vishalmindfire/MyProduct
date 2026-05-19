@@ -160,7 +160,40 @@ export const {
       return session;
     },
   },
+   events: {
+    async signOut(message) {
+      try {
+        const token =
+          message.token;
 
+        if (
+          token?.refreshToken
+        ) {
+          await fetch(
+            `${process.env.STRAPI_URL}/api/token/revoke`,
+            {
+              method: 'POST',
+
+              headers: {
+                'Content-Type':
+                  'application/json',
+              },
+
+              body: JSON.stringify({
+                refreshToken:
+                  token.refreshToken,
+              }),
+            }
+          );
+        }
+      } catch (error) {
+        console.error(
+          'Signout revoke failed:',
+          error
+        );
+      }
+    },
+  },
   pages: {
     signIn: '/login',
   },
