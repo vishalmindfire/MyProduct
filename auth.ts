@@ -195,7 +195,7 @@ export const {
     },
   },
   pages: {
-    signIn: '/login',
+    signIn: '/login', 
   },
 
   secret: process.env.AUTH_SECRET,

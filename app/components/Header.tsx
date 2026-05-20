@@ -12,6 +12,7 @@ const Header = async () => {
           <div className="hidden sm:flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
             <Link href="/features" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Features</Link>
             <Link href="/pricing" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Pricing</Link>
+            <Link href="/blogs" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Blog</Link>
           </div>
           <div className="flex items-center gap-2">
             <AuthButtons/>            
