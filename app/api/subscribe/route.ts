@@ -13,24 +13,21 @@ export async function GET(_req: NextRequest) {
     );
   }
 
-  // pageSize=1 avoids fetching all rows; withCount=true makes Strapi
-  // include meta.pagination.total in the response.
   const url = new URL(`${strapiUrl}/api/${COLLECTION}`);
   url.searchParams.set("pagination[pageSize]", "1");
   url.searchParams.set("pagination[withCount]", "true");
-  url.searchParams.set("status", "published"); // Strapi 5 status param
+  url.searchParams.set("status", "published");
 
   const res = await fetch(url.toString(), {
     headers: {
       Authorization: `Bearer ${apiToken}`,
       "Content-Type": "application/json",
     },
-    // Revalidate every hour; set to 0 for always-fresh
     next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
+    const text = await res.text();
     return Response.json(
       { error: `Strapi responded with ${res.status}`, detail: text },
       { status: res.status }
@@ -72,15 +69,14 @@ export async function POST(_req: NextRequest) {
   });
 
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
+    const detail = await res.json();
     return Response.json(
-      { error: `Strapi responded with ${res.status}`, detail: text },
+      { error: `Strapi responded with ${res.status}`, detail: detail?.error },
       { status: res.status }
     );
   }
 
   const json = await res.json();
-  const count: number = json?.meta?.pagination?.total ?? 0;
 
-  return Response.json({ count });
+  return Response.json({ json });
 }

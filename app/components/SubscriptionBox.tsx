@@ -1,5 +1,6 @@
 "use client";
 
+import { deserialize } from "node:v8";
 import  { useActionState } from "react";
 
 export type SubscribeState = { status: "idle" | "success" | "error"; message?: string };
@@ -27,6 +28,10 @@ const subscribe = async (
     });
 
     if(!res.ok){
+        const error = await res.json();
+        if(error?.detail?.message === "This attribute must be unique"){
+           return { status: "success", message: "You're already in the list"}
+        }
         return { status: "error", message: "Unexpected error occured. Try again."}
     }
 
