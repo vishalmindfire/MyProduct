@@ -7,6 +7,21 @@ export type Feature = {
   icon: ReactNode;
 };
 
+export const getFeatures = async () => {
+  const res = await fetch(`${process.env.STRAPI_URL}/api/features`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  if(!res.ok){
+    
+  }
+  const data = await res.json();
+
+  return data.data;
+}
+
 export const allFeatures: Feature[] = [
   {
     id: "organization",

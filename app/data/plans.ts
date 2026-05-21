@@ -1,14 +1,11 @@
 export type Plan = {
   name: string;
   price: string;
-  /** Displayed as "/ {period}" next to the price. Omit for "Custom" pricing. */
   period?: string;
   description: string;
   badge?: string;
   cta: string;
-  /** Full feature list — used on the pricing page. */
   features: string[];
-  /** Abbreviated list — used on the home page teaser. */
   featuresCompact: string[];
   highlighted: boolean;
 };
