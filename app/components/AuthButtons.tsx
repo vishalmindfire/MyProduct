@@ -24,7 +24,13 @@ export default function AuthButtons() {
             href="/dashboard"
             className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors"
             >
-            {session.user.name}
+            <div className="flex items-center gap-4">
+              <div>
+                <p className="text-base font-semibold text-zinc-950 dark:text-zinc-50">
+                  {session.user.name}
+                </p>
+              </div>
+            </div>
         </Link>
         <LogoutButton />
       </div>
