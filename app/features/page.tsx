@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import FeatureGrid from "@/app/components/FeatureGrid";
-import { allFeatures } from "@/app/data/features";
+import { getFeatures } from "@/app/data/features";
 
 export const metadata: Metadata = {
   title: "Features — Digital Asset Management",
@@ -27,11 +27,12 @@ const highlights = [
   },
 ];
 
-export default function FeaturesPage() {
+export default async function FeaturesPage() {
+  const allFeatures = await getFeatures();
   return (
     <div className="flex flex-col flex-1 bg-white dark:bg-zinc-950 font-sans">
       {/* Hero */}
-      <section className="mx-auto w-full max-w-5xl px-6 pt-24 pb-16 text-center">
+      <section className="mx-auto w-full max-w-5xl px-6 pb-16 text-center">
         <span className="inline-block rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-6">
           Digital Asset Management
         </span>
@@ -89,74 +90,6 @@ export default function FeaturesPage() {
         </div>
 
         <FeatureGrid features={allFeatures} cols={4} iconSize="md" />
-      </section>
-
-      {/* Deep-dive: Search */}
-      <section className="border-t border-zinc-100 dark:border-zinc-800">
-        <div className="mx-auto max-w-5xl px-6 py-20 flex flex-col lg:flex-row items-center gap-12">
-          <div className="flex-1">
-            <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
-              Search
-            </span>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-              Stop hunting. Start finding.
-            </h2>
-            <p className="mt-4 text-zinc-500 dark:text-zinc-400 leading-relaxed">
-              Our search index understands what is inside your files — not just
-              their names. Ask for &ldquo;blue product photos on white
-              background&rdquo; and get exactly that, across millions of assets,
-              in under a second.
-            </p>
-            <ul className="mt-6 space-y-3">
-              {[
-                "Visual similarity search",
-                "Full-text extraction from PDFs and slides",
-                "Color palette filtering",
-                "Custom metadata facets",
-              ].map((item) => (
-                <li
-                  key={item}
-                  className="flex items-center gap-2.5 text-sm text-zinc-600 dark:text-zinc-400"
-                >
-                  <svg
-                    viewBox="0 0 16 16"
-                    fill="currentColor"
-                    className="size-4 shrink-0 text-zinc-400 dark:text-zinc-500"
-                  >
-                    <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0Zm3.78 4.78a.75.75 0 0 0-1.06-1.06L7 7.44 5.28 5.72a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.06 0l4.25-4.25Z" />
-                  </svg>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Search mockup */}
-          <div className="flex-1 w-full max-w-sm lg:max-w-none">
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 shadow-sm">
-              <div className="flex items-center gap-2 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 mb-4">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="size-4 shrink-0 text-zinc-400">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-                <span className="text-sm text-zinc-400 dark:text-zinc-500">
-                  blue product photos on white background
-                </span>
-              </div>
-              <div className="grid grid-cols-3 gap-2">
-                {Array.from({ length: 9 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="aspect-square rounded-lg bg-zinc-200 dark:bg-zinc-700 animate-pulse"
-                    style={{ animationDelay: `${i * 80}ms` }}
-                  />
-                ))}
-              </div>
-              <p className="mt-3 text-center text-xs text-zinc-400 dark:text-zinc-500">
-                2,341 results &middot; 0.4 s
-              </p>
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* Deep-dive: Permissions */}

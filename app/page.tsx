@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import FeatureGrid from "@/app/components/FeatureGrid";
 import PlanGrid from "@/app/components/PlanGrid";
-import { homepageFeatures } from "@/app/data/features";
+import { getFeatures } from "@/app/data/features";
 
 export const metadata: Metadata = {
   title: "DAM — Digital Asset Management for Modern Teams",
@@ -34,69 +34,14 @@ const testimonials = [
   },
 ];
 
-const useCases = [
-  {
-    industry: "E-commerce",
-    heading: "Keep product images consistent across every channel",
-    body: "Centralise hero images, lifestyle shots, and spec sheets. Push approved assets directly to your storefront and CMS via API — no more email threads or Dropbox folders.",
-    accent: "bg-indigo-50 dark:bg-indigo-950/30 border-indigo-100 dark:border-indigo-900",
-    tag: "bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400",
-  },
-  {
-    industry: "Agencies",
-    heading: "Deliver client work without losing your mind",
-    body: "Organise each client in its own workspace. Share a password-protected portal for review, collect approvals, and track exactly who downloaded what.",
-    accent: "bg-emerald-50 dark:bg-emerald-950/30 border-emerald-100 dark:border-emerald-900",
-    tag: "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-400",
-  },
-  {
-    industry: "Enterprise",
-    heading: "Enforce brand standards at every touchpoint",
-    body: "Watermark assets on the fly, lock folders to approved contributors, and pull a full audit log any time legal or compliance needs to see who accessed what.",
-    accent: "bg-amber-50 dark:bg-amber-950/30 border-amber-100 dark:border-amber-900",
-    tag: "bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400",
-  },
-];
 
-/* ─── page ───────────────────────────────────────────────────────────────── */
-
-export default function HomePage() {
+export default async function HomePage() {
+  const homepageFeatures = await getFeatures();
+  
   return (
     <div className="flex flex-col flex-1 bg-white dark:bg-zinc-950 font-sans">
-
-      {/* ── Nav ─────────────────────────────────────────────────────────── */}
-      <header className="sticky top-0 z-50 border-b border-zinc-100 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur">
-        <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 h-14">
-          <span className="text-sm font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-            Axon<span className="text-zinc-400 dark:text-zinc-500"> DAM</span>
-          </span>
-          <div className="hidden sm:flex items-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
-            <Link href="/features" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Features</Link>
-            <Link href="/pricing" className="hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">Pricing</Link>
-          </div>
-          <div className="flex items-center gap-2">
-            <a href="#" className="hidden sm:flex h-8 items-center px-4 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-zinc-50 transition-colors">
-              Log in
-            </a>
-            <a href="#" className="flex h-8 items-center rounded-full bg-zinc-950 dark:bg-zinc-50 px-4 text-sm font-medium text-white dark:text-zinc-950 hover:bg-zinc-700 dark:hover:bg-zinc-200 transition-colors">
-              Get started
-            </a>
-          </div>
-        </nav>
-      </header>
-
-      {/* ── Hero ────────────────────────────────────────────────────────── */}
-      <section className="mx-auto w-full max-w-5xl px-6 pt-24 pb-20 text-center">
-        <a
-          href="#"
-          className="inline-flex items-center gap-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-8 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-        >
-          <span className="size-1.5 rounded-full bg-emerald-500" />
-          New — AI visual search is now live
-          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.5} className="size-3">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 8h10M9 4l4 4-4 4" />
-          </svg>
-        </a>
+      {/* Hero */}
+      <section className="mx-auto w-full max-w-5xl px-6 pt-12 pb-20 text-center">
 
         <h1 className="text-5xl sm:text-6xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 leading-[1.1]">
           Every asset your team
@@ -298,82 +243,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* ── Use cases ───────────────────────────────────────────────────── */}
-      <section className="border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
-        <div className="mx-auto w-full max-w-5xl px-6 py-24">
-          <div className="text-center mb-14">
-            <span className="text-xs font-semibold uppercase tracking-widest text-zinc-400 dark:text-zinc-500">
-              Use cases
-            </span>
-            <h2 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-              Built for how you actually work
-            </h2>
-          </div>
-
-          <div className="grid sm:grid-cols-3 gap-4">
-            {useCases.map((uc) => (
-              <div
-                key={uc.industry}
-                className={`rounded-2xl border p-6 ${uc.accent}`}
-              >
-                <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-semibold mb-4 ${uc.tag}`}>
-                  {uc.industry}
-                </span>
-                <h3 className="text-base font-semibold text-zinc-950 dark:text-zinc-50 mb-2 leading-snug">
-                  {uc.heading}
-                </h3>
-                <p className="text-sm leading-6 text-zinc-600 dark:text-zinc-400">
-                  {uc.body}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA ─────────────────────────────────────────────────────────── */}
-      <section className="border-t border-zinc-100 dark:border-zinc-800">
-        <div className="mx-auto max-w-5xl px-6 py-28 text-center">
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-            Your assets are waiting.
-          </h2>
-          <p className="mt-4 text-zinc-500 dark:text-zinc-400 max-w-md mx-auto">
-            Get set up in minutes. Free plan forever, no credit card required.
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <a
-              href="#"
-              className="flex h-11 items-center justify-center rounded-full bg-zinc-950 dark:bg-zinc-50 px-6 text-sm font-medium text-white dark:text-zinc-950 transition-colors hover:bg-zinc-700 dark:hover:bg-zinc-200"
-            >
-              Start for free
-            </a>
-            <a
-              href="#"
-              className="flex h-11 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 px-6 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900"
-            >
-              Book a demo
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Footer ──────────────────────────────────────────────────────── */}
-      <footer className="border-t border-zinc-100 dark:border-zinc-800">
-        <div className="mx-auto max-w-5xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-400 dark:text-zinc-500">
-          <span className="font-semibold text-zinc-500 dark:text-zinc-400">
-            Axon DAM
-          </span>
-          <div className="flex items-center gap-6">
-            <Link href="/features" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">Features</Link>
-            <Link href="/pricing" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">Pricing</Link>
-            <a href="#" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">Privacy</a>
-            <a href="#" className="hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors">Terms</a>
-          </div>
-          <span>© 2026 Axon DAM</span>
-        </div>
-      </footer>
-
     </div>
   );
 }
