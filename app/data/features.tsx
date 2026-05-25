@@ -1,14 +1,40 @@
-import type { ReactNode } from "react";
-
+import qs from "qs";
 export type Feature = {
   id: string;
-  title: string;
-  description: string;
-  icon: ReactNode;
+  feature: {
+    id: number;
+    title: string;
+    description: string;
+    icon: string;
+  }
 };
 
+const featuresQuery = qs.stringify({
+  populate: {
+    Features: {
+      populate: {
+        title: {
+          populate: {
+            fields: ['heading','subheading']
+          }
+        },
+        feature: {
+          populate: {
+            feature: {
+              fields: ['title', 'description']
+            }
+          }
+        }
+      }
+    }
+  }
+})
+
 export const getFeatures = async () => {
-  const res = await fetch(`${process.env.STRAPI_URL}/api/features`, {
+
+  const url = new URL('/api/feature-page', process.env.STRAPI_URL)
+  url.search = featuresQuery;
+  const res = await fetch(url.href, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -22,7 +48,7 @@ export const getFeatures = async () => {
   return data.data;
 }
 
-export const allFeatures: Feature[] = [
+export const allFeatures= [
   {
     id: "organization",
     title: "Smart Organization",

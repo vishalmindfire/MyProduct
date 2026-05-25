@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from 'next/image'
 import FeatureGrid from "@/app/components/FeatureGrid";
 import PlanGrid from "@/app/components/PlanGrid";
 import { getFeatures } from "@/app/data/features";
+import qs from "qs";
 
 export const metadata: Metadata = {
   title: "DAM — Digital Asset Management for Modern Teams",
@@ -34,25 +36,90 @@ const testimonials = [
   },
 ];
 
+const homePageQuery = qs.stringify({
+  populate: {
+  title: {
+    fields: ['heading', 'subheading']
+  },
+  blocks: {
+      on: {
+        'layout.hero-section': {
+          populate: {
+            image: {
+              fields: ['url', 'alternativeText']
+            },
+            link: {
+              populate: true
+            }
+          }
+        },
+        'layout.features-section': {
+           populate: {
+            feature: {
+              populate: {
+                feature: {
+                  fields: ['id','title','description','icon']
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+});
+
+
+const getHomePageData = async() => { 
+  const strapiUrl = process.env.STRAPI_URL;
+  if (!strapiUrl) {
+    return Response.json(
+      { error: 'STRAPI_URL is not configured' },
+      { status: 500 }
+    );
+  }
+  const url = new URL(`/api/home`,strapiUrl);
+  url.search = homePageQuery;
+  const res = await fetch(url.href, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: "GET",
+  });
+
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    return Response.json(
+      { error: `Strapi responded with ${res.status}`, detail: err?.error?.message },
+      { status: res.status }
+    );
+  }
+
+  const json = await res.json();
+  return json;
+}
+
+function getStrapiURL(url: string){
+  return process.env.STRAPI_URL + url;
+}
 
 export default async function HomePage() {
-  const homepageFeatures = await getFeatures();
-  
+  const homePageData = await getHomePageData();
+  const { title, description } = homePageData.data;
+  const [hero, features] = homePageData.data.blocks;
   return (
     <div className="flex flex-col flex-1 bg-white dark:bg-zinc-950 font-sans">
       {/* Hero */}
       <section className="mx-auto w-full max-w-5xl px-6 pt-12 pb-20 text-center">
 
         <h1 className="text-5xl sm:text-6xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 leading-[1.1]">
-          Every asset your team
+          {title.heading}
           <br />
-          <span className="text-zinc-400 dark:text-zinc-500">creates, in one place.</span>
+          <span className="text-zinc-400 dark:text-zinc-500">{title.subheading}</span>
         </h1>
 
         <p className="mt-6 text-xl text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          Axon is the digital asset manager built for speed. Ingest anything,
-          find it instantly, and deliver it anywhere — without the enterprise
-          bloat.
+          {description}
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -76,43 +143,9 @@ export default async function HomePage() {
 
         {/* Hero UI mockup */}
         <div className="mt-16 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 shadow-sm text-left">
-          {/* toolbar */}
-          <div className="flex items-center gap-2 mb-4">
-            <div className="flex items-center gap-1.5 flex-1 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="size-4 shrink-0 text-zinc-400">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-              </svg>
-              <span className="text-sm text-zinc-400 dark:text-zinc-500">Search 2M+ assets…</span>
-            </div>
-            <div className="flex items-center gap-1">
-              {["All", "Images", "Video", "Docs"].map((tab, i) => (
-                <span
-                  key={tab}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium cursor-pointer transition-colors ${
-                    i === 0
-                      ? "bg-white dark:bg-zinc-800 text-zinc-950 dark:text-zinc-50 shadow-sm"
-                      : "text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  {tab}
-                </span>
-              ))}
-            </div>
-          </div>
-          {/* asset grid */}
-          <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
-            {Array.from({ length: 16 }).map((_, i) => (
-              <div
-                key={i}
-                className="aspect-square rounded-lg bg-zinc-200 dark:bg-zinc-700"
-                style={{ opacity: 1 - i * 0.03 }}
-              />
-            ))}
-          </div>
-          <div className="mt-3 flex items-center justify-between text-xs text-zinc-400 dark:text-zinc-500">
-            <span>2,341,098 assets</span>
-            <span>Last updated just now</span>
-          </div>
+          <Image unoptimized={process.env.NODE_ENV === 'development'}
+            src={getStrapiURL(hero?.image?.url)} alt={hero?.image?.alternativeText} 
+            width="1200" height="500"/>
         </div>
       </section>
 
@@ -148,7 +181,7 @@ export default async function HomePage() {
           </p>
         </div>
 
-        <FeatureGrid features={homepageFeatures} cols={3} />
+        <FeatureGrid features={features.feature} cols={3} />
 
         <div className="mt-8 text-center">
           <Link

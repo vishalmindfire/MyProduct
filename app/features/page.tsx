@@ -29,22 +29,17 @@ const highlights = [
 
 export default async function FeaturesPage() {
   const allFeatures = await getFeatures();
+  const { Features} = allFeatures;
   return (
     <div className="flex flex-col flex-1 bg-white dark:bg-zinc-950 font-sans">
-      {/* Hero */}
       <section className="mx-auto w-full max-w-5xl px-6 pb-16 text-center">
-        <span className="inline-block rounded-full border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 px-3 py-1 text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-6">
-          Digital Asset Management
-        </span>
         <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 leading-tight">
-          One place for every asset
+          {Features.title.heading}
           <br />
-          your team will ever need
+          {Features.title.subheading}
         </h1>
         <p className="mt-5 text-lg text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          Ingest, organize, transform, and distribute files at any scale — with
-          the search, permissions, and integrations your workflow already
-          demands.
+          {Features.description}
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
@@ -89,7 +84,7 @@ export default async function FeaturesPage() {
           </p>
         </div>
 
-        <FeatureGrid features={allFeatures} cols={4} iconSize="md" />
+        <FeatureGrid features={Features.feature} cols={4} iconSize="md" />
       </section>
 
       {/* Deep-dive: Permissions */}
