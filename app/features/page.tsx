@@ -28,13 +28,29 @@ const highlights = [
 ];
 
 export default async function FeaturesPage() {
-  const allFeatures = await getFeatures();
-  const { Features} = allFeatures;
-  return (
+    const allFeatures = await getFeatures();
+    const Features = allFeatures?.Features;
+
+    if (!Features) {
+      return (
+        <div className="flex flex-1 items-center justify-center px-6 py-32 text-center">
+          <div>
+            <h1 className="text-2xl font-semibold text-zinc-950 dark:text-zinc-50">
+              Features unavailable
+            </h1>
+            <p className="mt-3 text-zinc-500 dark:text-zinc-400">
+              Could not load feature content. Please try again later.
+            </p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
     <div className="flex flex-col flex-1 bg-white dark:bg-zinc-950 font-sans">
       <section className="mx-auto w-full max-w-5xl px-6 pb-16 text-center">
         <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 leading-tight">
-          {Features.title.heading}
+          {Features.title.heading }
           <br />
           {Features.title.subheading}
         </h1>
