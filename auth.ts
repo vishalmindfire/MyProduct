@@ -1,4 +1,5 @@
 import NextAuth, { CredentialsSignin } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
 import Credentials from 'next-auth/providers/credentials';
 
 declare module 'next-auth' {
@@ -13,13 +14,11 @@ declare module 'next-auth' {
   }
 }
 
-
 class InvalidCredentials extends CredentialsSignin {
   code = 'invalid_credentials';
 }
 
-
-async function refreshAccessToken(token: any) {
+async function refreshAccessToken(token: JWT) {
   try {
     const res = await fetch(
       `${process.env.STRAPI_URL}/api/auth/refresh`,
@@ -29,7 +28,7 @@ async function refreshAccessToken(token: any) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          refreshToken: token.refreshToken,
+          refreshToken: token?.refreshToken,
         }),
       }
     );
@@ -43,12 +42,8 @@ async function refreshAccessToken(token: any) {
     return {
       ...token,
       accessToken: refreshed.accessToken,
-      accessTokenExpires:
-        Date.now() +
-        refreshed.expiresIn * 1000,
-      refreshToken:
-        refreshed.refreshToken ??
-        token.refreshToken,
+      accessTokenExpires: Date.now() + refreshed.expiresIn * 1000,
+      refreshToken: refreshed.refreshToken ?? token.refreshToken,
     };
   } catch {
     return {
@@ -81,14 +76,11 @@ export const {
           {
             method: 'POST',
             headers: {
-              'Content-Type':
-                'application/json',
+              'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              identifier:
-                credentials.email,
-              password:
-                credentials.password,
+              identifier: credentials.email,
+              password: credentials.password,
             }),
           }
         );
@@ -97,23 +89,17 @@ export const {
 
         if (!res.ok || !data.jwt) {
           throw new InvalidCredentials(
-            data.error?.message ??
-              'Invalid credentials'
+            data.error?.message ?? 'Invalid credentials'
           );
         }
-        
+
         return {
           id: data.user.id.toString(),
           name: data.user.username,
           email: data.user.email,
-
           accessToken: data.jwt,
-
-          refreshToken:
-            data.refreshToken,
-
-          accessTokenExpires:
-            Date.now() + 15 * 60 * 1000,
+          refreshToken: data.refreshToken,
+          accessTokenExpires: Date.now() + 15 * 60 * 1000,
         };
       },
     }),
@@ -124,78 +110,55 @@ export const {
       if (user) {
         return {
           ...token,
-          accessToken:
-            user.accessToken,
-          refreshToken:
-            user.refreshToken,
-          accessTokenExpires:
-            user.accessTokenExpires,
+          accessToken: user.accessToken,
+          refreshToken: user.refreshToken,
+          accessTokenExpires: user.accessTokenExpires,
         };
       }
 
-      if (
-        Date.now() <
-        (token.accessTokenExpires as number)
-      ) {
+      if (Date.now() < (token.accessTokenExpires as number)) {
         return token;
       }
 
       return refreshAccessToken(token);
     },
 
-    async session({
-      session,
-      token,
-    }) {
+    async session({ session, token }) {
       if (session.user) {
         session.user.id = token.sub!;
       }
 
-      session.accessToken =
-        token.accessToken as string;
-
-      session.error =
-        token.error as string | undefined;
+      session.accessToken = token.accessToken as string;
+      session.error = token.error as string | undefined;
 
       return session;
     },
   },
-   events: {
+
+  events: {
     async signOut(message) {
       try {
-        const token =
-          message.token;
+        const token = 'token' in message ? message.token : null;
 
-        if (
-          token?.refreshToken
-        ) {
-          await fetch(
-            `${process.env.STRAPI_URL}/api/token/revoke`,
-            {
-              method: 'POST',
-
-              headers: {
-                'Content-Type':
-                  'application/json',
-              },
-
-              body: JSON.stringify({
-                refreshToken:
-                  token.refreshToken,
-              }),
-            }
-          );
+        if (token?.refreshToken) {
+          await fetch(`${process.env.STRAPI_URL}/api/token/revoke`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              refreshToken: token.refreshToken,
+            }),
+          });
         }
       } catch (error) {
-        console.error(
-          'Signout revoke failed:',
-          error
-        );
+        console.error('Signout revoke failed:', error);
       }
     },
   },
+
   pages: {
-    signIn: '/login', 
+    signIn: '/login',
   },
 
   secret: process.env.AUTH_SECRET,

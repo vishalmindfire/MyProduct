@@ -7,7 +7,8 @@ type UserCountInfo = {
   newUserCount: string;
 };
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) =>
+  fetch(url).then((res) => (res.ok ? res.json() : null));
 
 export default function LiveSectionBox({ fallback }: Record<string, UserCountInfo>) {
   const { data } = useSWR<UserCountInfo>("/api/stats", fetcher, {
