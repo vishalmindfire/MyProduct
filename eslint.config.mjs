@@ -19,11 +19,8 @@ const eslintConfig = defineConfig([
         'no-console': ['error'],
         '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       },
-<<<<<<< Updated upstream
-=======
 		files: ['**/*.test.ts', '**/*.spec.ts'],
 		plugins: { jest: pluginJest },
->>>>>>> Stashed changes
   }
 ]);
 
