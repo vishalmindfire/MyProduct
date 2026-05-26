@@ -31,21 +31,26 @@ const featuresQuery = qs.stringify({
 })
 
 export const getFeatures = async () => {
+  if (!process.env.STRAPI_URL) return null;
 
   const url = new URL('/api/feature-page', process.env.STRAPI_URL)
   url.search = featuresQuery;
-  const res = await fetch(url.href, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-  if(!res.ok){
-    
-  }
-  const data = await res.json();
 
-  return data.data;
+  try {
+    const res = await fetch(url.href, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!res.ok) return null;
+
+    const data = await res.json();
+    return data.data ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export const allFeatures= [
