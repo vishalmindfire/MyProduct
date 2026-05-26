@@ -1,6 +1,7 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
+import pluginJest from 'eslint-plugin-jest'
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -18,6 +19,8 @@ const eslintConfig = defineConfig([
         'no-console': ['error'],
         '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       },
+		files: ['**/*.test.ts', '**/*.spec.ts'],
+		plugins: { jest: pluginJest },
   }
 ]);
 
