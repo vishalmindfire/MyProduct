@@ -11,17 +11,17 @@ export type Feature = {
 
 const featuresQuery = qs.stringify({
   populate: {
+    title: {
+      populate: {
+        fields: ['heading','subheading']
+      }
+    },
     Features: {
       populate: {
-        title: {
-          populate: {
-            fields: ['heading','subheading']
-          }
-        },
         feature: {
           populate: {
             feature: {
-              fields: ['title', 'description']
+              fields: ['title', 'description', 'icon']
             }
           }
         }

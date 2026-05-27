@@ -9,6 +9,12 @@ const nextConfig: NextConfig = {
       hostname: "localhost",
       port: "1337",
       pathname: "/uploads/**"
+     },
+     {
+      protocol: "https",
+      hostname: "https://different-freedom-77952e3e8f.media.strapiapp.com",
+      port: "443",
+      pathname: "**"
      }
     ],
   },

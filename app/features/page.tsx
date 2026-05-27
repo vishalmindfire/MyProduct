@@ -30,6 +30,8 @@ const highlights = [
 export default async function FeaturesPage() {
     const allFeatures = await getFeatures();
     const Features = allFeatures?.Features;
+    const { heading, subheading} = allFeatures?.title;
+    const description = allFeatures.description;
 
     if (!Features) {
       return (
@@ -50,12 +52,12 @@ export default async function FeaturesPage() {
     <div className="flex flex-col flex-1 bg-white dark:bg-zinc-950 font-sans">
       <section className="mx-auto w-full max-w-5xl px-6 pb-16 text-center">
         <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50 leading-tight">
-          {Features.title.heading }
+          {heading }
           <br />
-          {Features.title.subheading}
+          {subheading}
         </h1>
         <p className="mt-5 text-lg text-zinc-500 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-          {Features.description}
+          {description}
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
@@ -93,10 +95,10 @@ export default async function FeaturesPage() {
       <section className="mx-auto w-full max-w-5xl px-6 py-20">
         <div className="mb-12 text-center">
           <h2 className="text-3xl font-semibold tracking-tight text-zinc-950 dark:text-zinc-50">
-            Built for the full asset lifecycle
+            {Features.title}
           </h2>
           <p className="mt-3 text-zinc-500 dark:text-zinc-400 max-w-xl mx-auto">
-            From first upload to final delivery, every stage is covered.
+            {Features.description}
           </p>
         </div>
 

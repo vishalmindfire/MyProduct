@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from 'next/image'
 import FeatureGrid from "@/app/components/FeatureGrid";
 import PlanGrid from "@/app/components/PlanGrid";
-import { getFeatures } from "@/app/data/features";
 import qs from "qs";
 
 export const metadata: Metadata = {
@@ -143,7 +142,7 @@ export default async function HomePage() {
 
         {/* Hero UI mockup */}
         <div className="mt-16 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 shadow-sm text-left">
-          <Image unoptimized={process.env.NODE_ENV === 'development'}
+          <Image
             src={getStrapiURL(hero?.image?.url)} alt={hero?.image?.alternativeText} 
             width="1200" height="500"/>
         </div>
