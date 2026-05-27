@@ -26,7 +26,6 @@ const BlogGrid = () => {
                 limit: blogState.limit
             }
         }},
-        refreshInterval: 5000,
     });
 
     return (

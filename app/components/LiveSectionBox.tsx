@@ -13,7 +13,6 @@ const fetcher = (url: string) =>
 export default function LiveSectionBox({ fallback }: Record<string, UserCountInfo>) {
   const { data } = useSWR<UserCountInfo>("/api/stats", fetcher, {
     fallbackData: fallback,
-    refreshInterval: 5000,
   });
 
   return (
