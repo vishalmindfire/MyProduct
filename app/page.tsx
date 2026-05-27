@@ -99,7 +99,7 @@ const getHomePageData = async() => {
 }
 
 function getStrapiURL(url: string){
-  return process.env.STRAPI_URL + url;
+  return process.env.MEDIA_URL + url;
 }
 
 export default async function HomePage() {

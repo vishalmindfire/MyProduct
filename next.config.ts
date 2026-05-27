@@ -12,9 +12,8 @@ const nextConfig: NextConfig = {
      },
      {
       protocol: "https",
-      hostname: "https://different-freedom-77952e3e8f.media.strapiapp.com",
-      port: "443",
-      pathname: "**"
+      hostname: "**.strapiapp.com",
+      pathname: "/**"
      }
     ],
   },
