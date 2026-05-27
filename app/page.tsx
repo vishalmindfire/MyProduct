@@ -143,7 +143,7 @@ export default async function HomePage() {
         {/* Hero UI mockup */}
         <div className="mt-16 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 shadow-sm text-left">
           <Image
-            src={getStrapiURL(hero?.image?.url)} alt={hero?.image?.alternativeText} 
+            src={hero?.image?.url} alt={hero?.image?.alternativeText} 
             width="1200" height="500"/>
         </div>
       </section>
