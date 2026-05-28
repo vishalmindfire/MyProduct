@@ -4,6 +4,7 @@ import Image from 'next/image'
 import FeatureGrid from "@/app/components/FeatureGrid";
 import PlanGrid from "@/app/components/PlanGrid";
 import qs from "qs";
+import { auth } from '@/auth';
 
 export const metadata: Metadata = {
   title: "DAM — Digital Asset Management for Modern Teams",
@@ -99,10 +100,11 @@ const getHomePageData = async() => {
 }
 
 function getStrapiURL(url: string){
-  return process.env.MEDIA_URL + url;
+  return process.env.NODE_ENV !== "production" ? process.env.STRAPI_URL + url : url;
 }
 
 export default async function HomePage() {
+  const session = await auth();
   const homePageData = await getHomePageData();
   const { title, description } = homePageData.data;
   const [hero, features] = homePageData.data.blocks;
@@ -122,12 +124,12 @@ export default async function HomePage() {
         </p>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <a
-            href="#"
+          {!session && <Link
+            href="/register"
             className="flex h-11 items-center justify-center rounded-full bg-zinc-950 dark:bg-zinc-50 px-6 text-sm font-medium text-white dark:text-zinc-950 transition-colors hover:bg-zinc-700 dark:hover:bg-zinc-200"
           >
             Start for free
-          </a>
+          </Link>}
           <Link
             href="/features"
             className="flex h-11 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 px-6 text-sm font-medium text-zinc-700 dark:text-zinc-300 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900"
@@ -143,7 +145,7 @@ export default async function HomePage() {
         {/* Hero UI mockup */}
         <div className="mt-16 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 shadow-sm text-left">
           <Image
-            src={hero?.image?.url} alt={hero?.image?.alternativeText} 
+            src={getStrapiURL(hero?.image?.url)} alt={hero?.image?.alternativeText} 
             width="1200" height="500"/>
         </div>
       </section>
