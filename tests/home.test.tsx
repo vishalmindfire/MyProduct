@@ -9,6 +9,10 @@ jest.mock('next/link', () => ({
   ),
 }))
 
+jest.mock('@/auth', () => ({
+  auth: jest.fn().mockResolvedValue(null),
+}))
+
 jest.mock('next/image', () => ({
   __esModule: true,
   default: ({ src, alt }: { src: string; alt: string }) => (
